@@ -1,0 +1,214 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ConsoleApp
+{
+    public class Conta
+    {
+
+        private string Titular { get; set; }
+        private string Cpf { get; set; }
+        private string Cidade { get; set; }
+        private string Bairro { get; set; }
+        private string Telefone { get; set; }
+        public int Id { get; set; }
+        private double Saldo { get; set; }
+
+        public void Menu()
+        {
+        inicio:
+            Console.WriteLine("=================================================================================\n");
+            Console.WriteLine("Olá, o que você deseja fazer? Precione um número | 1 | 2 | 3 | 4 |\n");
+            Console.WriteLine("1 - Cadastrar uma nova conta");
+            Console.WriteLine("2 - Editar conta");
+            Console.WriteLine("3 - Consultar conta");
+            Console.WriteLine("4 - Sair\n");
+
+            ConsoleKeyInfo MenuSelection = Console.ReadKey(true);
+
+            switch (MenuSelection.KeyChar)
+            {
+                case '1':
+                    CriarConta();
+                    break;
+
+                case '2':
+                    EditarConta();
+                    break;
+                case '3':
+                    ConsultarConta();
+                    break;
+                case '4':
+                    Environment.Exit(1);
+                    break;
+
+                default:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Erro ao escolhar um opção! Tente novamente!");
+                    Thread.Sleep(1000);
+                    Console.ResetColor();
+                    Console.Clear();
+                    goto inicio;
+            }
+
+        }
+        public void CriarConta()
+        {
+            Console.Clear();
+            Console.WriteLine("=================================================================================\n");
+            Console.WriteLine("Entre com seus dados: ");
+        nome:
+            try
+            {
+                Console.WriteLine("\nNome do titular: ");
+                Titular = Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto nome;
+            }
+
+        cpf:
+            try
+            {
+                Console.WriteLine("\nCPF do titular: ");
+                Cpf = Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto cpf;
+            }
+
+        bairro:
+            try
+            {
+                Console.WriteLine("\nBairro: ");
+                Bairro = Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto bairro;
+            }
+
+        cidade:
+            try
+            {
+                Console.WriteLine("\nCidade: ");
+                Cidade = Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto cidade;
+            }
+
+        telefone:
+            try
+            {
+                Console.WriteLine("\nTelefone: \n");
+                Telefone = Console.ReadLine();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto telefone;
+            }
+
+            Console.WriteLine("\nDeseja voltar? | 1 - Voltar | 2 - Sair | ");
+            ConsoleKeyInfo MenuSelection = Console.ReadKey(true);
+
+            switch (MenuSelection.KeyChar)
+            {
+                case '1':
+                    Console.Clear();
+                    Menu();
+                    break;
+
+                case '2':
+                    Environment.Exit(1);
+                    break;
+            }
+        }
+        public void ConsultarConta()
+        {
+            Console.Clear();
+            Console.WriteLine("=================================================================================\n");
+            Console.WriteLine("Os dados da sua conta é:\nTitular: " + Titular + "\nCPF: " + Cpf + "\nCidade: " + Cidade + "\nBairro: " + Bairro + "\nTelefone: " + Telefone + "\nSaldo: " + Saldo);
+
+            Console.WriteLine("\nDeseja voltar? | 1 - Voltar | 2 - Sair | ");
+            ConsoleKeyInfo MenuSelection = Console.ReadKey(true);
+
+            switch (MenuSelection.KeyChar)
+            {
+                case '1':
+                    Console.Clear();
+                    Menu();
+                    break;
+
+                case '2':
+                    Environment.Exit(1);
+                    break;
+
+
+            }
+        }
+        public void EditarConta()
+        {
+            Console.Clear();
+            Console.WriteLine("Aqui será editada uma conta");
+
+            Console.WriteLine("\nDeseja voltar? | 1 - Voltar | 2 - Sair | ");
+            ConsoleKeyInfo MenuSelection = Console.ReadKey(true);
+
+            switch (MenuSelection.KeyChar)
+            {
+                case '1':
+                    Console.Clear();
+                    Menu();
+                    break;
+
+                case '2':
+                    Environment.Exit(1);
+                    break;
+            }
+        }
+
+    }
+
+    public class Programa
+    {
+        public static void Main()
+        {
+            Console.CursorVisible = false;
+            Conta pp = new Conta();
+            pp.Menu();
+            
+            
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\bin\Release\ConsoleApp.exe.config
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\bin\Release\ConsoleApp.exe
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\bin\Release\ConsoleApp.pdb
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Release\ConsoleApp.csprojAssemblyReference.cache
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Release\ConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Release\ConsoleApp.exe
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Release\ConsoleApp.pdb
