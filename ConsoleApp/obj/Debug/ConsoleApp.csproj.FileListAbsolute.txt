@@ -4,3 +4,4 @@ C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\bin\Debug\ConsoleApp.e
 C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\bin\Debug\ConsoleApp.pdb
 C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Debug\ConsoleApp.exe
 C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Debug\ConsoleApp.pdb
+C:\Users\pedro.dantas\source\repos\Projeto_Pai\ConsoleApp\obj\Debug\ConsoleApp.csprojAssemblyReference.cache
