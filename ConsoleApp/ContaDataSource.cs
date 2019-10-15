@@ -55,20 +55,20 @@ namespace ConsoleApp
                 string linha = LerConta.ReadLine();
                 
                 string[] DadosConta = linha.Split(',');
-                Conta pp = new Conta();
-                pp.Titular = DadosConta[0].Split('=')[1];
-                pp.Cpf = DadosConta[1].Split('=')[1];
-                pp.Cidade = DadosConta[2].Split('=')[1];
-                pp.Bairro = DadosConta[3].Split('=')[1];
-                pp.Telefone = DadosConta[4].Split('=')[1];
-                pp.Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]);
-                pp.NumeroConta = DadosConta[6].Split('=')[1];
-                pp.Agencia = DadosConta[7].Split('=')[1];
+                Conta conta = new Conta();
+                conta.Titular = DadosConta[0].Split('=')[1];
+                conta.Cpf = DadosConta[1].Split('=')[1];
+                conta.Cidade = DadosConta[2].Split('=')[1];
+                conta.Bairro = DadosConta[3].Split('=')[1];
+                conta.Telefone = DadosConta[4].Split('=')[1];
+                conta.Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]);
+                conta.NumeroConta = DadosConta[6].Split('=')[1];
+                conta.Agencia = DadosConta[7].Split('=')[1];
 
-                if (pp.Agencia == InputAgencia && pp.NumeroConta == InputNumeroConta)
+                if (conta.Agencia == InputAgencia && conta.NumeroConta == InputNumeroConta)
                 {
                     LerConta.Close();
-                    return pp;
+                    return conta;
                 }
             }
             LerConta.Close();
