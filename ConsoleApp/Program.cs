@@ -2,6 +2,7 @@
 using System.Threading;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -53,7 +54,6 @@ namespace ConsoleApp
                     Console.Clear();
                     goto inicio;
             }
-
         }
 
         public void CriarConta()
@@ -115,7 +115,6 @@ namespace ConsoleApp
             {
                 Console.WriteLine("\nTelefone: \n");
                 Telefone = Console.ReadLine();
-
             }
             catch (Exception ex)
             {
@@ -201,40 +200,8 @@ namespace ConsoleApp
                 Console.WriteLine("Digite um novo Telefone: ");
                 NovaContaEditada.Telefone = Console.ReadLine();
 
-                ContaDataSource.Save(NovaContaEditada);
-                
-                StreamReader LerConta = File.OpenText(Caminho);
+                ContaDataSource.AtualizarConta(NovaContaEditada);
 
-                while (LerConta.EndOfStream != true)
-                {
-                    string linha = LerConta.ReadLine();
-
-                    string[] DadosConta = linha.Split(',');
-                    Conta ContaAntiga = new Conta();
-                    ContaAntiga.Titular = DadosConta[0].Split('=')[1];
-                    ContaAntiga.Cpf = DadosConta[1].Split('=')[1];
-                    ContaAntiga.Cidade = DadosConta[2].Split('=')[1];
-                    ContaAntiga.Bairro = DadosConta[3].Split('=')[1];
-                    ContaAntiga.Telefone = DadosConta[4].Split('=')[1];
-                    ContaAntiga.Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]);
-                    ContaAntiga.NumeroConta = DadosConta[6].Split('=')[1];
-                    ContaAntiga.Agencia = DadosConta[7].Split('=')[1];
-
-                    if ((ContaAntiga.Agencia == NovaContaEditada.Agencia && ContaAntiga.NumeroConta == NovaContaEditada.NumeroConta))
-                    {
-                        LerConta.Close();
-                        string[] LinhaParaManter = new string[1] { $"Titular={NovaContaEditada.Titular},CPF={NovaContaEditada.Cpf},Cidade={NovaContaEditada.Cidade},Bairro={NovaContaEditada.Bairro},Telefone={NovaContaEditada.Telefone},Saldo={NovaContaEditada.Saldo},Conta={NovaContaEditada.NumeroConta},Agencia={NovaContaEditada.Agencia}" };
-
-                        File.WriteAllLines(tempFile, LinhaParaManter);
-                    }
-                    File.Delete(Caminho);
-                    File.Move(tempFile, Caminho);
-                    Console.Clear();
-                    LerConta.Close();
-                    break;
-                }
-                LerConta.Close();
-                
                 Console.WriteLine("\nConta aleterada com sucesso!");
                 Console.WriteLine("\nTitular: " + NovaContaEditada.Titular + "\nCpf: " + NovaContaEditada.Cpf + "\nCidade: " + NovaContaEditada.Cidade + "\nBairro: " + NovaContaEditada.Bairro 
                     + "\nTelefone: " + NovaContaEditada.Telefone + "\nAgência: " + NovaContaEditada.Agencia + "\nConta: " + NovaContaEditada.NumeroConta + "\nSaldo: " + NovaContaEditada.Saldo);
@@ -250,6 +217,7 @@ namespace ConsoleApp
         
         private void Sacar(double OperacaoSaque, Conta conta)
         {
+            Console.Clear();
             Conta ValorOperacaoSaque = new Conta();
             ValorOperacaoSaque.Titular = conta.Titular;
             ValorOperacaoSaque.Cpf = conta.Cpf;
@@ -266,47 +234,17 @@ namespace ConsoleApp
             }
             else {
                 Console.WriteLine("Saldo insuficiente para o saque!");
+                Console.Clear();
                 OperacaoConta(conta);
             }
          
             string menssagem = "Sacar: R$ " + OperacaoSaque + ", com o saldo atual de: R$ " + ValorOperacaoSaque.Saldo;
+
             ContaDataSource.SaveExtrato(ValorOperacaoSaque, menssagem);
 
-            ContaDataSource.Save(ValorOperacaoSaque);
+            ContaDataSource.AtualizarConta(ValorOperacaoSaque);
 
-            StreamReader LerConta = File.OpenText(Caminho);
-
-            while (LerConta.EndOfStream != true)
-            {
-                string linha = LerConta.ReadLine();
-
-                string[] DadosConta = linha.Split(',');
-                Conta ContaAntiga = new Conta();
-                ContaAntiga.Titular = DadosConta[0].Split('=')[1];
-                ContaAntiga.Cpf = DadosConta[1].Split('=')[1];
-                ContaAntiga.Cidade = DadosConta[2].Split('=')[1];
-                ContaAntiga.Bairro = DadosConta[3].Split('=')[1];
-                ContaAntiga.Telefone = DadosConta[4].Split('=')[1];
-                ContaAntiga.Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]);
-                ContaAntiga.NumeroConta = DadosConta[6].Split('=')[1];
-                ContaAntiga.Agencia = DadosConta[7].Split('=')[1];
-
-                if ((ContaAntiga.Agencia == ValorOperacaoSaque.Agencia && ContaAntiga.NumeroConta == ValorOperacaoSaque.NumeroConta))
-                {
-                    LerConta.Close();
-                    string[] LinhaParaManter = new string[1] { $"Titular={ValorOperacaoSaque.Titular},CPF={ValorOperacaoSaque.Cpf},Cidade={ValorOperacaoSaque.Cidade},Bairro={ValorOperacaoSaque.Bairro},Telefone={ValorOperacaoSaque.Telefone},Saldo={ValorOperacaoSaque.Saldo},Conta={ValorOperacaoSaque.NumeroConta},Agencia={ValorOperacaoSaque.Agencia}" };
-
-                    File.WriteAllLines(tempFile, LinhaParaManter);
-                }
-                File.Delete(Caminho);
-                File.Move(tempFile, Caminho);
-                Console.Clear();
-                LerConta.Close();
-                break;
-            }
-            LerConta.Close();
-
-            Console.WriteLine("\nConta aleterada com sucesso!");
+            Console.WriteLine("\nSaque feito com sucesso!");
             Console.WriteLine("\nTitular: " + ValorOperacaoSaque.Titular + "\nCpf: " + ValorOperacaoSaque.Cpf + "\nCidade: " + ValorOperacaoSaque.Cidade + "\nBairro: " + ValorOperacaoSaque.Bairro
                 + "\nTelefone: " + ValorOperacaoSaque.Telefone + "\nAgência: " + ValorOperacaoSaque.Agencia + "\nConta: " + ValorOperacaoSaque.NumeroConta + "\nSaldo: " + ValorOperacaoSaque.Saldo);
 
@@ -314,6 +252,7 @@ namespace ConsoleApp
         }
         private void Depositar(double ValorOperacaoDeposita, Conta conta)
         {
+            Console.Clear();
             Conta NovoDepositoEditado = new Conta();
             NovoDepositoEditado.Titular = conta.Titular;
             NovoDepositoEditado.Cpf = conta.Cpf;
@@ -324,48 +263,15 @@ namespace ConsoleApp
             NovoDepositoEditado.Agencia = conta.Agencia;
             NovoDepositoEditado.Saldo = conta.Saldo;
 
-            string menssagem = "Deposito: R$ " + ValorOperacaoDeposita + ", com o saldo atual de: R$ " + conta.Saldo;
-            ContaDataSource.SaveExtrato(NovoDepositoEditado, menssagem);
-
             NovoDepositoEditado.Saldo += ValorOperacaoDeposita;
 
-            ContaDataSource.Save(NovoDepositoEditado);
+            string menssagem = "Deposito: R$ " + ValorOperacaoDeposita + ", com o saldo atual de: R$ " + NovoDepositoEditado.Saldo;
 
-            ContaDataSource.Save(NovoDepositoEditado);
+            ContaDataSource.SaveExtrato(NovoDepositoEditado, menssagem);
 
-            StreamReader LerConta = File.OpenText(Caminho);
+            ContaDataSource.AtualizarConta(NovoDepositoEditado);
 
-            while (LerConta.EndOfStream != true)
-            {
-                string linha = LerConta.ReadLine();
-
-                string[] DadosConta = linha.Split(',');
-                Conta ContaAntiga = new Conta();
-                ContaAntiga.Titular = DadosConta[0].Split('=')[1];
-                ContaAntiga.Cpf = DadosConta[1].Split('=')[1];
-                ContaAntiga.Cidade = DadosConta[2].Split('=')[1];
-                ContaAntiga.Bairro = DadosConta[3].Split('=')[1];
-                ContaAntiga.Telefone = DadosConta[4].Split('=')[1];
-                ContaAntiga.Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]);
-                ContaAntiga.NumeroConta = DadosConta[6].Split('=')[1];
-                ContaAntiga.Agencia = DadosConta[7].Split('=')[1];
-
-                if ((ContaAntiga.Agencia == NovoDepositoEditado.Agencia && ContaAntiga.NumeroConta == NovoDepositoEditado.NumeroConta))
-                {
-                    LerConta.Close();
-                    string[] LinhaParaManter = new string[1] { $"Titular={NovoDepositoEditado.Titular},CPF={NovoDepositoEditado.Cpf},Cidade={NovoDepositoEditado.Cidade},Bairro={NovoDepositoEditado.Bairro},Telefone={NovoDepositoEditado.Telefone},Saldo={NovoDepositoEditado.Saldo},Conta={NovoDepositoEditado.NumeroConta},Agencia={NovoDepositoEditado.Agencia}" };
-
-                    File.WriteAllLines(tempFile, LinhaParaManter);
-                }
-                File.Delete(Caminho);
-                File.Move(tempFile, Caminho);
-                Console.Clear();
-                LerConta.Close();
-                break;
-            }
-            LerConta.Close();
-
-            Console.WriteLine("\nConta aleterada com sucesso!");
+            Console.WriteLine("\nDeposito feito com sucesso!");
             Console.WriteLine("\nTitular: " + NovoDepositoEditado.Titular + "\nCpf: " + NovoDepositoEditado.Cpf + "\nCidade: " + NovoDepositoEditado.Cidade + "\nBairro: " + NovoDepositoEditado.Bairro
                 + "\nTelefone: " + NovoDepositoEditado.Telefone + "\nAgência: " + NovoDepositoEditado.Agencia + "\nConta: " + NovoDepositoEditado.NumeroConta + "\nSaldo: " + NovoDepositoEditado.Saldo);
 
@@ -416,7 +322,7 @@ namespace ConsoleApp
                     Console.ReadKey(true);
                     Console.ResetColor();
                     Console.Clear();
-                    OperacaoConta(conta);
+                    Menu();
                     break;
                 case '5':
                     EditarConta(conta);
@@ -433,9 +339,7 @@ namespace ConsoleApp
         {
             StreamReader LerConta = File.OpenText(Caminho);
 
-            //Conta[] ContasAManter = new Conta[100];
-
-            //var cont = 0;
+            List<string> LinhaContaParaManter = new List<string>() {};
 
             while (LerConta.EndOfStream != true)
             {
@@ -454,46 +358,16 @@ namespace ConsoleApp
 
                 if (LinhaParaManter.Agencia != conta.Agencia && LinhaParaManter.NumeroConta != conta.NumeroConta)
                 {
-                    string[] LinhaContaParaManter = new string[] { linha };//{ $"Titular={conta.Titular},CPF={conta.Cpf},Cidade={conta.Cidade},Bairro={conta.Bairro},Telefone={conta.Telefone},Saldo={conta.Saldo},Conta={conta.NumeroConta},Agencia={conta.Agencia}" };
-                    File.WriteAllLines(tempFile, LinhaContaParaManter);
+                    LinhaContaParaManter.Add(linha);
                 }
-            }
-                LerConta.Close();
-                File.Delete(Caminho);
-                File.Move(tempFile, Caminho);
-                Console.Clear();
-                Menu();
-
-                //ContasAManter[cont] = LinhaContaAManter;
-
-                //cont = cont + 1;  
-
-            //if (ContasAManter.Agencia == conta.Agencia && ContasAManter.NumeroConta == conta.NumeroConta)
-            //{
-            //    LerConta.Close();
-            //    string[] LinhaParaManter = new string[1] { $"Titular={conta.Titular},CPF={conta.Cpf},Cidade={conta.Cidade},Bairro={conta.Bairro},Telefone={conta.Telefone},Saldo={conta.Saldo},Conta={conta.NumeroConta},Agencia={conta.Agencia}" };
-
-            //    File.WriteAllLines(tempFile, LinhaParaManter);
-            //}
-            //    File.Delete(Caminho);
-            //    File.Move(tempFile, Caminho);
-            //    Console.Clear();
-            //    LerConta.Close();
-            //    break;
-            //}
-            //LerConta.Close();
-
-
-            //var linesToKeep = File.ReadLines(Caminho).Where(l => l != "Titular=" + conta.Titular + ",CPF=" + conta.Cpf + ",Cidade=" + conta.Cidade +
-            //",Bairro=" + conta.Bairro + ",Telefone=" + conta.Telefone + ",Saldo=" + conta.Saldo + ",Conta=" + conta.NumeroConta + ",Agencia=" + conta.Agencia);
-            //File.WriteAllLines(tempFile, linesToKeep);
-            //File.Delete(Caminho);
-            //File.Move(tempFile, Caminho);
-            //Console.Clear();
-            //Console.WriteLine("Conta deletada com sucesso!");
-            //Thread.Sleep(2000);
-            //Console.Clear();
-            //Menu();
+        }
+        LerConta.Close();
+        File.WriteAllLines(tempFile, LinhaContaParaManter);
+        File.Delete(Caminho);
+        File.Move(tempFile, Caminho);
+        Console.WriteLine("Conta deletada com sucesso!");
+        Console.Clear();
+        Menu();
         }
 
         public void ConsultarConta()
@@ -505,9 +379,9 @@ namespace ConsoleApp
             Console.WriteLine("Digite o numero da sua Conta: ");
             string InputNumeroConta = Console.ReadLine();
 
-            Conta pp = ContaDataSource.GetByAgenciaEConta(InputAgencia, InputNumeroConta);
+            Conta conta = ContaDataSource.GetByAgenciaEConta(InputAgencia, InputNumeroConta);
 
-            if (pp == null)
+            if (conta == null)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("\nConta não cadastrada, tente novamente!");
@@ -516,10 +390,10 @@ namespace ConsoleApp
                 Console.Clear();
                 Menu();
             }
-            Console.WriteLine("\nTitular: " + pp.Titular + "\nCpf: " + pp.Cpf + "\nCidade: " + pp.Cidade + "\nBairro: " + pp.Bairro + "\nTelefone: "
-                + pp.Telefone + "\nAgência: " + pp.Agencia + "\nConta: " + pp.NumeroConta + "\nSaldo: " + pp.Saldo);
+            Console.WriteLine("\nTitular: " + conta.Titular + "\nCpf: " + conta.Cpf + "\nCidade: " + conta.Cidade + "\nBairro: " + conta.Bairro + "\nTelefone: "
+                + conta.Telefone + "\nAgência: " + conta.Agencia + "\nConta: " + conta.NumeroConta + "\nSaldo: " + conta.Saldo);
 
-            OperacaoConta(pp);
+            OperacaoConta(conta);
         }
     }
 
@@ -528,12 +402,12 @@ namespace ConsoleApp
         public static void Main()
         {
             Console.CursorVisible = false;
-            Conta pp = new Conta();
+            Conta conta = new Conta();
 
             if (File.Exists("C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\Contas\\Conta.txt"))
-                pp.ConsultarConta();
+                conta.ConsultarConta();
             else
-                pp.CriarConta();
+                conta.CriarConta();
         }
     }
 }

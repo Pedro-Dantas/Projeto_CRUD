@@ -1,1 +1,3 @@
-Titular=paulo,CPF=127345,Cidade=rio de janeiro,Bairro=freguesia,Telefone=334,Saldo=0,Conta=812613,Agencia=5803
+Titular=pedro,CPF=127345,Cidade=rio de janeiro,Bairro=freguesia,Telefone=334,Saldo=0,Conta=812611,Agencia=5801
+Titular=andre,CPF=127345,Cidade=rio de janeiro,Bairro=freguesia,Telefone=334,Saldo=500,Conta=812612,Agencia=5802
+Titular=ricardo,CPF=127345,Cidade=rio de janeiro,Bairro=freguesia,Telefone=334,Saldo=100,Conta=812614,Agencia=5804
