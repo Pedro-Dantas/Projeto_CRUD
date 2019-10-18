@@ -15,9 +15,7 @@ namespace ConsoleApp
         public string Telefone { get; set; }
         public string Agencia { get; set; }
         public string NumeroConta { get; set; }
-
         public double Saldo { get; set; }
-        public string linha { get; private set; }
 
         string tempFile = "C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\tempContas\\Conta.txt";
 
@@ -27,7 +25,7 @@ namespace ConsoleApp
         {
         inicio:
             Console.WriteLine("=================================================================================\n");
-            Console.WriteLine("Olá, o que você deseja fazer? Precione um número | 1 | 2 | 3 | 4 |\n");
+            Console.WriteLine("Olá, o que você deseja fazer? Precione um número | 1 | 2 | 3 |\n");
             Console.WriteLine("1 - Cadastrar uma nova conta");
             Console.WriteLine("2 - Consultar conta");
             Console.WriteLine("3 - Sair\n");
@@ -172,7 +170,6 @@ namespace ConsoleApp
         public void EditarConta(Conta conta)
         {
             Console.Clear();
-
             try
             {
                 Conta NovaContaEditada = new Conta();
@@ -218,15 +215,17 @@ namespace ConsoleApp
         private void Sacar(double OperacaoSaque, Conta conta)
         {
             Console.Clear();
-            Conta ValorOperacaoSaque = new Conta();
-            ValorOperacaoSaque.Titular = conta.Titular;
-            ValorOperacaoSaque.Cpf = conta.Cpf;
-            ValorOperacaoSaque.Cidade = conta.Cidade;
-            ValorOperacaoSaque.Bairro = conta.Bairro;
-            ValorOperacaoSaque.Telefone = conta.Telefone;
-            ValorOperacaoSaque.NumeroConta = conta.NumeroConta;
-            ValorOperacaoSaque.Agencia = conta.Agencia;
-            ValorOperacaoSaque.Saldo = conta.Saldo;
+            Conta ValorOperacaoSaque = new Conta()
+            {
+                Titular = conta.Titular,
+                Cpf = conta.Cpf,
+                Cidade = conta.Cidade,
+                Bairro = conta.Bairro,
+                Telefone = conta.Telefone,
+                NumeroConta = conta.NumeroConta,
+                Agencia = conta.Agencia,
+                Saldo = conta.Saldo
+            };
 
             if (ValorOperacaoSaque.Saldo >= OperacaoSaque)
             {
@@ -237,7 +236,7 @@ namespace ConsoleApp
                 Console.Clear();
                 OperacaoConta(conta);
             }
-         
+
             string menssagem = "Sacar: R$ " + OperacaoSaque + ", com o saldo atual de: R$ " + ValorOperacaoSaque.Saldo;
 
             ContaDataSource.SaveExtrato(ValorOperacaoSaque, menssagem);
@@ -253,15 +252,17 @@ namespace ConsoleApp
         private void Depositar(double ValorOperacaoDeposita, Conta conta)
         {
             Console.Clear();
-            Conta NovoDepositoEditado = new Conta();
-            NovoDepositoEditado.Titular = conta.Titular;
-            NovoDepositoEditado.Cpf = conta.Cpf;
-            NovoDepositoEditado.Cidade = conta.Cidade;
-            NovoDepositoEditado.Bairro = conta.Bairro;
-            NovoDepositoEditado.Telefone = conta.Telefone;
-            NovoDepositoEditado.NumeroConta = conta.NumeroConta;
-            NovoDepositoEditado.Agencia = conta.Agencia;
-            NovoDepositoEditado.Saldo = conta.Saldo;
+            Conta NovoDepositoEditado = new Conta
+            {
+                Titular = conta.Titular,
+                Cpf = conta.Cpf,
+                Cidade = conta.Cidade,
+                Bairro = conta.Bairro,
+                Telefone = conta.Telefone,
+                NumeroConta = conta.NumeroConta,
+                Agencia = conta.Agencia,
+                Saldo = conta.Saldo
+            };
 
             NovoDepositoEditado.Saldo += ValorOperacaoDeposita;
 
@@ -305,18 +306,7 @@ namespace ConsoleApp
                     Sacar(ValorOperacaoSaque, conta);
                     break;
                 case '4':
-                    string CaminhoExtrato = "C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\ExtratoContas\\";
-                    string NomeArquivo = $"{conta.Agencia}{conta.NumeroConta}";
-                    StreamReader Extrato = File.OpenText(CaminhoExtrato + NomeArquivo);
-
-                    Console.WriteLine("Extrato: " + " Agencia: " + conta.Agencia + ", Numero da conta: " + conta.NumeroConta);
-
-                    while (Extrato.EndOfStream != true)
-                    {
-                        string linha = Extrato.ReadLine();
-                        Console.WriteLine(linha);
-                        Thread.Sleep(50);
-                    }
+                    ContaDataSource.LerExtrato(conta);
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nDigite qualquer tecla para continuar!");
                     Console.ReadKey(true);
@@ -346,15 +336,17 @@ namespace ConsoleApp
                 string linha = LerConta.ReadLine();
 
                 string[] DadosConta = linha.Split(',');
-                Conta LinhaParaManter = new Conta();
-                LinhaParaManter.Titular = DadosConta[0].Split('=')[1];
-                LinhaParaManter.Cpf = DadosConta[1].Split('=')[1];
-                LinhaParaManter.Cidade = DadosConta[2].Split('=')[1];
-                LinhaParaManter.Bairro = DadosConta[3].Split('=')[1];
-                LinhaParaManter.Telefone = DadosConta[4].Split('=')[1];
-                LinhaParaManter.Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]);
-                LinhaParaManter.NumeroConta = DadosConta[6].Split('=')[1];
-                LinhaParaManter.Agencia = DadosConta[7].Split('=')[1];
+                Conta LinhaParaManter = new Conta()
+                {
+                    Titular = DadosConta[0].Split('=')[1],
+                    Cpf = DadosConta[1].Split('=')[1],
+                    Cidade = DadosConta[2].Split('=')[1],
+                    Bairro = DadosConta[3].Split('=')[1],
+                    Telefone = DadosConta[4].Split('=')[1],
+                    Saldo = Convert.ToDouble(DadosConta[5].Split('=')[1]),
+                    NumeroConta = DadosConta[6].Split('=')[1],
+                    Agencia = DadosConta[7].Split('=')[1]
+                };
 
                 if (LinhaParaManter.Agencia != conta.Agencia && LinhaParaManter.NumeroConta != conta.NumeroConta)
                 {
@@ -366,6 +358,7 @@ namespace ConsoleApp
         File.Delete(Caminho);
         File.Move(tempFile, Caminho);
         Console.WriteLine("Conta deletada com sucesso!");
+        Thread.Sleep(3000);
         Console.Clear();
         Menu();
         }
