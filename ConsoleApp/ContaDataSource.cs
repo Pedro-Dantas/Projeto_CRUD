@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace ConsoleApp
 {
@@ -50,13 +51,10 @@ namespace ConsoleApp
 
         public static void LerExtrato(Conta conta)
         {
-            string NomeArquivo = $"{conta.Agencia}{conta.NumeroConta}";
-            StreamReader Extrato = File.OpenText(CaminhoExtrato + NomeArquivo);
-
             Console.WriteLine("Extrato: " + " Agencia: " + conta.Agencia + ", Numero da conta: " + conta.NumeroConta);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\nEntre com o primeiro intervalos de data (de)");
+            Console.WriteLine("\nEntre com o primeiro intervalo de data (de)");
             Console.ResetColor();
 
             Console.WriteLine("\nEntre com o dia: ");
@@ -69,7 +67,7 @@ namespace ConsoleApp
             int DoAno = int.Parse(Console.ReadLine());
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\nEntre com o segundo intervalos de data (até)");
+            Console.WriteLine("\nEntre com o segundo intervalo de data (até)");
             Console.ResetColor();
 
             Console.WriteLine("\nEntre com o dia: ");
@@ -81,26 +79,66 @@ namespace ConsoleApp
             Console.WriteLine("\nEntre com o ano: ");
             int AteAno = int.Parse(Console.ReadLine());
 
-            string PrimeiraData = $"{DoDia}/{DoMes}/{DoAno}";
+            string DeData = $"{DoDia}/{DoMes}/{DoAno}";
 
-            string SegundaData = $"{DoDia}/{DoMes}/{DoAno}";
+            string AteData = $"{AteDia}/{AteMes}/{AteAno}";
+
+            //DateTime DeData = Convert.ToDateTime(PrimeiraData);
+
+            //DateTime AteData = Convert.ToDateTime(SegundaData);
+
+            //List<DateTime> ExtratoAMostrar = new List<DateTime>();
 
             List<string> ExtratoAMostrar = new List<string>();
 
-            while (Extrato.EndOfStream != true)
+            string NomeArquivo = $"{conta.Agencia}{conta.NumeroConta}";
+
+            string CaminhoLerExtrato = $"C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\ExtratoContas\\{NomeArquivo}.txt";
+
+            StreamReader LerExtrato = File.OpenText(CaminhoLerExtrato);
+
+            while (LerExtrato.EndOfStream != true)
             {
-                string linha = Console.ReadLine();
+                string linha = LerExtrato.ReadLine();
                 string[] DadosExtrato = linha.Split(',');
-                string DataExtrato = DadosExtrato[0];
+                //DateTime ExtratoEmData = Convert.ToDateTime(DadosExtrato[0]);
 
-                if (true)
-                {
+                //int resultado = DateTime.Compare(DeData, AteData);
 
-                }
-                //else
-                    //ExtratoAMostrar.Add(DataExtrato);
+                    //if (ExtratoEmData == DeData)
+                    //{
+                    //    ExtratoAMostrar.Add(ExtratoEmData);
+                    //}
+
+                    if (DadosExtrato[0] == DeData)
+                    {
+                        ExtratoAMostrar.Add(linha);
+                    do
+                    {
+                        ExtratoAMostrar.Add(linha);
+                    }
+                    while (DadosExtrato[0] != AteData);
+                    }
+
+                    //if (DadosExtrato[0] == AteData)
+                    //{
+                    //    ExtratoAMostrar.Add(linha);
+                    //    break;
+                    //}
             }
-            Extrato.Close();
+            LerExtrato.Close();
+
+            //foreach (DateTime extratos in ExtratoAMostrar)
+            //{
+            //    Console.WriteLine(extratos.ToString("d"));
+            //}
+
+            foreach (string extratos in ExtratoAMostrar)
+            {
+                Console.WriteLine(extratos);
+            }
+
+
         }
 
         public static Conta GetByAgenciaEConta(string InputAgencia, string InputNumeroConta)
