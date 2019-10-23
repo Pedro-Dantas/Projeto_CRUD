@@ -1,5 +1,5 @@
-14/10/2019,Deposito: R$ 2000, com o saldo atual de: R$ 2000
-15/10/2019,Sacar: R$ 500, com o saldo atual de: R$ 1500
-16/10/2019,Sacar: R$ 700, com o saldo atual de: R$ 800
-17/10/2019,Deposito: R$ 200, com o saldo atual de: R$ 2200
-18/10/2019,Sacar: R$ 1954, com o saldo atual de: R$ 246
+14/10/2019,2000,2000
+15/10/2019,500,1500
+16/10/2019,700,800
+17/10/2019,200,2200
+18/10/2019,1954,246

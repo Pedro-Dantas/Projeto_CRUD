@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace ConsoleApp
 {
@@ -30,7 +29,7 @@ namespace ConsoleApp
         public static void SaveExtrato(Conta conta, string menssagem)
         {
             string NomeArquivo = $"{conta.Agencia}{conta.NumeroConta}";
-            FileInfo umArquivo = new FileInfo(CaminhoExtrato + NomeArquivo);
+            FileInfo umArquivo = new FileInfo(CaminhoExtrato + NomeArquivo + ".txt");
  
             try
             {
@@ -83,13 +82,9 @@ namespace ConsoleApp
 
             string AteData = $"{AteDia}/{AteMes}/{AteAno}";
 
-            //DateTime DeData = Convert.ToDateTime(PrimeiraData);
+            List<List<string>> ExtratoAMostrar = new List<List<string>>();
 
-            //DateTime AteData = Convert.ToDateTime(SegundaData);
-
-            //List<DateTime> ExtratoAMostrar = new List<DateTime>();
-
-            List<string> ExtratoAMostrar = new List<string>();
+            List<string> ExtratoAMostrarParteDois = new List<string>();
 
             string NomeArquivo = $"{conta.Agencia}{conta.NumeroConta}";
 
@@ -101,43 +96,47 @@ namespace ConsoleApp
             {
                 string linha = LerExtrato.ReadLine();
                 string[] DadosExtrato = linha.Split(',');
-                //DateTime ExtratoEmData = Convert.ToDateTime(DadosExtrato[0]);
-
-                //int resultado = DateTime.Compare(DeData, AteData);
-
-                    //if (ExtratoEmData == DeData)
-                    //{
-                    //    ExtratoAMostrar.Add(ExtratoEmData);
-                    //}
-
-                    if (DadosExtrato[0] == DeData)
-                    {
-                        ExtratoAMostrar.Add(linha);
-                    do
-                    {
-                        ExtratoAMostrar.Add(linha);
-                    }
-                    while (DadosExtrato[0] != AteData);
-                    }
-
-                    //if (DadosExtrato[0] == AteData)
-                    //{
-                    //    ExtratoAMostrar.Add(linha);
-                    //    break;
-                    //}
+                ExtratoAMostrarParteDois.Add(DadosExtrato[0]);
+                ExtratoAMostrarParteDois.Add(DadosExtrato[1]);
+                ExtratoAMostrar.Add(ExtratoAMostrarParteDois);
+                
             }
             LerExtrato.Close();
 
-            //foreach (DateTime extratos in ExtratoAMostrar)
-            //{
-            //    Console.WriteLine(extratos.ToString("d"));
-            //}
-
-            foreach (string extratos in ExtratoAMostrar)
+            /*for(var i = 0; i < ExtratoAMostrar.Count; i++)
             {
-                Console.WriteLine(extratos);
-            }
+                if (ExtratoAMostrar[i] == DeData)
+                {
+                    Console.WriteLine(ExtratoAMostrar[i]);
+                    do{
+                        Console.WriteLine(ExtratoAMostrar[i]);
+                        i++;
+                    } while (ExtratoAMostrar[i] != AteData);
+                }
 
+                else if(ExtratoAMostrar[i] == AteData)
+                {
+                    Console.WriteLine(ExtratoAMostrar[i]);
+                }
+            }*/
+
+            for (var i = ExtratoAMostrar.Count - 1; i <= ExtratoAMostrar.Count; i--)
+            {
+                if (ExtratoAMostrar[i][0] == AteData)
+                {
+                    Console.WriteLine(ExtratoAMostrar[i][0] + ExtratoAMostrar[i][1]);
+                    do
+                    {
+                        i--;
+                        Console.WriteLine(ExtratoAMostrar[i][0] + ExtratoAMostrar[i][1]);
+                    } while (ExtratoAMostrar[i][0] != AteData);
+                }
+
+                else if (ExtratoAMostrar[i][0] == DeData)
+                {
+                    Console.WriteLine(ExtratoAMostrar[i][0] + ExtratoAMostrar[i][1]);
+                }
+            }
 
         }
 
@@ -152,8 +151,8 @@ namespace ConsoleApp
                 string[] DadosConta = linha.Split(',');
                 Conta conta = new Conta()
                 {
-                    Cpf = DadosConta[1].Split('=')[1],
                     Titular = DadosConta[0].Split('=')[1],
+                    Cpf = DadosConta[1].Split('=')[1],
                     Cidade = DadosConta[2].Split('=')[1],
                     Bairro = DadosConta[3].Split('=')[1],
                     Telefone = DadosConta[4].Split('=')[1],
