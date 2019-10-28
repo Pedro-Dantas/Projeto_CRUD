@@ -9,7 +9,7 @@ namespace ConsoleApp
         static string Caminho = "C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\Contas\\Conta.txt";
         static string tempFile = "C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\tempContas\\Conta.txt";
         static string CaminhoExtrato = "C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\ExtratoContas\\";
-
+       
         public static bool Save(Conta conta)
         {
             try
@@ -82,66 +82,50 @@ namespace ConsoleApp
 
             string AteData = $"{AteDia}/{AteMes}/{AteAno}";
 
-            List<List<string>> ExtratoAMostrar = new List<List<string>>();
-
-            List<string> ExtratoAMostrarParteDois = new List<string>();
-
             string NomeArquivo = $"{conta.Agencia}{conta.NumeroConta}";
 
             string CaminhoLerExtrato = $"C:\\Users\\pedro.dantas\\source\\repos\\Projeto_Pai\\ConsoleApp\\ExtratoContas\\{NomeArquivo}.txt";
 
             StreamReader LerExtrato = File.OpenText(CaminhoLerExtrato);
 
+            List<string[]> ExtratoAMostrar = new List<string[]>(); 
+
             while (LerExtrato.EndOfStream != true)
             {
                 string linha = LerExtrato.ReadLine();
                 string[] DadosExtrato = linha.Split(',');
-                ExtratoAMostrarParteDois.Add(DadosExtrato[0]);
-                ExtratoAMostrarParteDois.Add(DadosExtrato[1]);
-                ExtratoAMostrar.Add(ExtratoAMostrarParteDois);
-                
+
+                ExtratoAMostrar.Add(DadosExtrato);
+
             }
             LerExtrato.Close();
 
-            /*for(var i = 0; i < ExtratoAMostrar.Count; i++)
-            {
-                if (ExtratoAMostrar[i] == DeData)
-                {
-                    Console.WriteLine(ExtratoAMostrar[i]);
-                    do{
-                        Console.WriteLine(ExtratoAMostrar[i]);
-                        i++;
-                    } while (ExtratoAMostrar[i] != AteData);
-                }
-
-                else if(ExtratoAMostrar[i] == AteData)
-                {
-                    Console.WriteLine(ExtratoAMostrar[i]);
-                }
-            }*/
+            Console.WriteLine();
 
             for (var i = ExtratoAMostrar.Count - 1; i <= ExtratoAMostrar.Count; i--)
             {
+                if (i < 0)
+                {
+                    break;
+                }
                 if (ExtratoAMostrar[i][0] == AteData)
                 {
-                    Console.WriteLine(ExtratoAMostrar[i][0] + ExtratoAMostrar[i][1]);
+                    Console.WriteLine("A data: " + ExtratoAMostrar[i][0] + ", Com a operação" + ExtratoAMostrar[i][1] + ", " + ExtratoAMostrar[i][2]);
                     do
                     {
-                        i--;
-                        Console.WriteLine(ExtratoAMostrar[i][0] + ExtratoAMostrar[i][1]);
-                    } while (ExtratoAMostrar[i][0] != AteData);
-                }
-
-                else if (ExtratoAMostrar[i][0] == DeData)
-                {
-                    Console.WriteLine(ExtratoAMostrar[i][0] + ExtratoAMostrar[i][1]);
+                        if (i >= 0)
+                        {
+                            i--;
+                            Console.WriteLine("A data: " + ExtratoAMostrar[i][0] + ", Com a operação" + ExtratoAMostrar[i][1] + ", " + ExtratoAMostrar[i][2]);
+                        }
+                    } while (ExtratoAMostrar[i][0] != DeData);
                 }
             }
-
+           
         }
 
         public static Conta GetByAgenciaEConta(string InputAgencia, string InputNumeroConta)
-            {
+        {
             StreamReader LerConta = File.OpenText(Caminho);
 
             while (LerConta.EndOfStream != true)

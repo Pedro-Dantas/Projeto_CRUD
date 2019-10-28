@@ -48,8 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContaDataSource.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Agencia.cs" />
+    <Compile Include="Conta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
